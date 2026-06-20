@@ -1,0 +1,29 @@
+name: Build EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm install
+      - name: Build Windows EXE
+        run: npm run build:win
+      - name: Upload Portable EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: BizCor-Report-Designer-Portable
+          path: release/BizCor-Report-Designer-Portable.exe
+          retention-days: 60
+      - name: Upload Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: BizCor-Report-Designer-Setup
+          path: release/*.exe
+          retention-days: 60
